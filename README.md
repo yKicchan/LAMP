@@ -21,11 +21,21 @@ Vagrant 1.9.x
 
 [公式サイト](https://www.virtualbox.org/)からダウンロードしてインストール
 
-### 動かす！！
+### Cloneから起動まで
 
 ローカルの好きなところにクローンします
 ```
 $ git clone https://github.com/yKicchan/LAMP.git
+```
+
+Windowsの人はnfsが使えないらしいのでL13をコメントアウトし、L15のコメントを外しましょう
+
+Vagrantfile
+```
+# Mac OSX
+# node.vm.synced_folder "./docker", "/docker", type: "nfs"
+# Windows
+node.vm.synced_folder "./docker", "/docker", type: "rsync", rsync__exclude: [".vagrant/", ".git/"]
 ```
 
 ゲストOSを立ち上げる
@@ -55,14 +65,6 @@ http://docker.dev/test.php にアクセスするとDBの接続が簡単ですが
 ### Vagrantfile
 
 Vagrantの設定ファイルです。
-
-Windowsの人はnfsが使えないらしいのでL13をコメントアウトし、L15のコメントを外しましょう
-```
-# Mac OSX
-# node.vm.synced_folder "./docker", "/docker", type: "nfs"
-# Windows
-node.vm.synced_folder "./docker", "/docker", type: "rsync", rsync__exclude: [".vagrant/", ".git/"]
-```
 
 ### docker/master/init.d
 
