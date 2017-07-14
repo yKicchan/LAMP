@@ -2,7 +2,7 @@
 
 - VirtualBox+Vagrant+Dockerを使ったLAMP開発環境です。
 - apache2.4 + php5.6 + mysql5.6
-- [yKicchan/LAMP-REPL](https://github.com/yKicchan/LAMP-REPL.git)の通常盤
+- レプリケーション対応版はこちら[yKicchan/LAMP-REPL](https://github.com/yKicchan/LAMP-REPL.git)
 
 
 ## 手順
@@ -50,37 +50,23 @@ Mac /etc/hosts
 
 Win C:¥windows¥system32¥drivers¥etc¥hosts
 ```
-192.168.33.11 docker.dev
+192.168.33.11 lamp.dev
 ```
 
-ブラウザで http://docker.dev にアクセスし、phpinfoが表示されたら成功です
+ブラウザで http://lamp.dev にアクセスし、phpinfoが表示されたら成功です
 
-http://docker.dev/test.php にアクセスするとDBの接続が簡単ですがテストできます
+http://lamp.dev/test.php にアクセスするとDBの接続が簡単ですがテストできます
 
 接続ごとに接続した時間が表示されていけば成功です
 
 
 ## 各ディレクトリとファイルの説明(一部抜粋)
 
-### Vagrantfile
-
-Vagrantの設定ファイルです。
-
-### docker/master/init.d
-
-ここにダンプファイルを置くことで、DBにデータを流しこめます。
-
-### docker/src
-
-ソースはここにおきましょう
-
 ### docker/comporse.yml
 
-Dockerの各コンテナの設定です。
+Dockerの各コンテナの設定ファイルです。
 
-必要に応じて変更してください。
-
-mysqlの初期設定:L15~
+L15-L19のところで、DBを自動で作成することができます
 ```
 environment:
   - MYSQL_ROOT_PASSWORD=rootpass
@@ -102,6 +88,14 @@ MYSQL_USER
 MYSQL_PASSWORD
 - 作成したユーザのパスワードを設定できます
 
+### docker/mysql/init.d
+
+ここにダンプファイルを置くことで、comporse.ymlで作成したDBに初期データを流しこめます。
+
+### docker/src
+
+ソースはここにおきましょう
+
 ### docker/app/apache/virtual.conf
 
 apacheの設定ファイルです。
@@ -112,7 +106,7 @@ apacheの設定ファイルです。
 
 アプリコンテナのDockerfileです。
 
-RUNコマンドで必要なパッケージなどインストールできます。
+アプリケーションに必要なライブラリなどはここでインストールできます。
 
 詳しくは公式サイトなどを参考にしてください。
 
@@ -123,26 +117,12 @@ apacheのリライト機能を使う方はL7のコメントを外してくださ
 RUN a2enmod rewrite
 ```
 
-### docker/master/my.cnf
+### docker/mysql/my.cnf
 
-マスター側のmysqlの設定ファイルです。
+mysqlの設定ファイルです。
 
 必要に応じて適当に変更してください。
 
-以下はスレーブの設定
-```
-server-id=1001
-log-bin=mysql-bin
-relay_log_info_repository=TABLE
-relay_log_recovery=ON
-sync_binlog=1
-```
-
-### docker/replica/my.cnf
-
-スレーブ側のmysql設定ファイルです。
-
-`server-id=1002`と`read_only`以外はマスターと同じがいいらしいです。
 
 ## コマンド
 
