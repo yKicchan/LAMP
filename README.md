@@ -59,6 +59,16 @@ http://lamp.dev/test.php にアクセスするとDBの接続が簡単ですが�
 
 接続ごとに接続した時間が表示されていけば成功です
 
+Windowsはファイルシステムの仕様上(?)nfsが使えずにrsyncというものを採用しました。ファイルの変更を監視するために、VMの立ち上げに成功したら
+```
+~省略
+Creating mysql
+Creating app
+
+$ vagrant rsync-auto
+```
+としてください。
+
 
 ## 各ディレクトリとファイルの説明(一部抜粋)
 
