@@ -1,0 +1,31 @@
+version: '2'
+services:
+  master:
+    build: ./master
+    container_name: master
+    stdin_open: true
+    tty: false
+    expose:
+      - "3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: database
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    volumes:
+      - ./master/init.d:/docker-entrypoint-initdb.d
+      - ./master:/docker
+    depends_on:
+      - master
+  app:
+    build: ./app
+    container_name: app
+    stdin_open: true
+    tty: false
+    ports:
+      - "80:80"
+    volumes:
+      - ./src:/var/www/html
+      - ./app/apache:/etc/apache2/sites-enabled/
+    depends_on:
+      - master
