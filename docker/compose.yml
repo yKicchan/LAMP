@@ -15,8 +15,6 @@ services:
     volumes:
       - ./mysql/init.d:/docker-entrypoint-initdb.d
       - ./mysql:/docker
-    depends_on:
-      - mysql
   app:
     build: ./app
     container_name: app
