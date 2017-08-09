@@ -12,7 +12,7 @@
 [公式サイト](http://www.vagrantup.com/)からダウンロードしてインストール
 
 コマンドでバージョンを確認
-```
+```sh
 $ vagrant --version
 Vagrant 1.9.x
 ```
@@ -24,14 +24,13 @@ Vagrant 1.9.x
 ### Cloneから起動まで
 
 ローカルの好きなところにクローンします
-```
+```sh
 $ git clone https://github.com/yKicchan/LAMP.git
 ```
 
 Windowsの人はnfsが使えないらしいのでL13をコメントアウトし、L15のコメントを外しましょう
 
-Vagrantfile
-```
+```ruby
 # Mac OSX
 # node.vm.synced_folder "./docker", "/docker", type: "nfs"
 # Windows
@@ -39,7 +38,7 @@ node.vm.synced_folder "./docker", "/docker", type: "rsync", rsync__exclude: [".v
 ```
 
 ゲストOSを立ち上げる
-```
+```sh
 $ cd LAMP
 $ vagrant up
 ```
@@ -77,7 +76,7 @@ $ vagrant rsync-auto
 Dockerの各コンテナの設定ファイルです。
 
 L15-L19のところで、DBを自動で作成することができます
-```
+```yml
 environment:
   - MYSQL_ROOT_PASSWORD=rootpass
   - MYSQL_DATABASE=database
@@ -172,5 +171,5 @@ $ docker ps -a
 
 コンテナにログイン
 ```
-docker exec -it コンテナ名 /bin/bash
+$ docker exec -it コンテナ名 /bin/bash
 ```
